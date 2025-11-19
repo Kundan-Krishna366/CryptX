@@ -4,10 +4,11 @@ A simple C++ console app that encrypts and decrypts text files using three ciphe
 
 ## Build
 
+``` bash
 cd src
 g++ *.cpp -o cryptx
 ./cryptx
-
+```
 
 ## Usage
 
