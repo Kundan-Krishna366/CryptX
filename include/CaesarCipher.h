@@ -9,14 +9,13 @@ private:
     int shift;  // Shift value for Caesar Cipher
 
 public:
-    // Constructor
-    CaesarCipher(int shiftValue = 3);
+    explicit CaesarCipher(int shiftValue = 3);
 
-    // File-based encryption/decryption
-    void encrypt(const std::string& inputFile, const std::string& outputFile) override;
-    void decrypt(const std::string& inputFile, const std::string& outputFile) override;
+    void encrypt(const std::string &inputFile,
+                 const std::string &outputFile) override;
+    void decrypt(const std::string &inputFile,
+                 const std::string &outputFile) override;
 
-    // Helper to shift text
     char shiftChar(char c, int s);
 };
 

@@ -6,12 +6,12 @@
 
 class ReverseCipher : public Cipher {
 public:
-    // Constructor
     ReverseCipher();
 
-    // Methods override the Base Class to handle file I/O directly
-    void encrypt(const string& inputFile, const string& outputFile) override;
-    void decrypt(const string& inputFile, const string& outputFile) override;
+    void encrypt(const std::string &inputFile,
+                 const std::string &outputFile) override;
+    void decrypt(const std::string &inputFile,
+                 const std::string &outputFile) override;
 };
 
 #endif
