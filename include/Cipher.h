@@ -8,7 +8,7 @@ class Cipher {
 public:
     virtual ~Cipher() = default;
 
-    // Every cipher class MUST implement these:
+    // virtual methods to encrypt and decrpyt methods that should be defined in each type of methods according to thier algo .
     virtual void encrypt(const string& inputFile, const string& outputFile) = 0;
     virtual void decrypt(const string& inputFile, const string& outputFile) = 0;
 };
