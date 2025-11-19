@@ -4,8 +4,6 @@
 #include "Cipher.h"
 #include <string>
 
-using namespace std;
-
 class ReverseCipher : public Cipher {
 public:
     // Constructor
