@@ -1,15 +1,14 @@
 #include "../include/CaesarCipher.h"
-#include <iostream>
-#include <fstream>
-#include <string>
+#include "../include/FileManager.h"
 #include <stdexcept>
 
 using namespace std;
 
-// Constructor to initialize the shift value with maintinig it attainable
-CaesarCipher::CaesarCipher(int shiftValue) : shift(shiftValue % 26) {}
+// Constructor to initialize the shift value (normalized to 0–25)
+CaesarCipher::CaesarCipher(int shiftValue)
+    : shift(shiftValue % 26) {}
 
-// Shifts a single character by shift value
+// Shift a single character
 char CaesarCipher::shiftChar(char c, int s) {
     if (c >= 'A' && c <= 'Z') {
         return char('A' + (c - 'A' + s + 26) % 26);
@@ -17,59 +16,29 @@ char CaesarCipher::shiftChar(char c, int s) {
     if (c >= 'a' && c <= 'z') {
         return char('a' + (c - 'a' + s + 26) % 26);
     }
-    return c; // Non-alphabetic characters remains unchanged
+    return c; // Non-alphabetic characters remain unchanged
 }
 
-//  Caesar Cipher Method implemented
-void CaesarCipher::encrypt(const string& inputFile, const string& outputFile) {
-    ifstream inFile(inputFile);
-    if (!inFile.is_open()) {
-        throw runtime_error("Error: Could not open input file: " + inputFile);
-    }
+// Encrypt: shift forward
+void CaesarCipher::encrypt(const string &inputFile,
+                           const string &outputFile) {
+    string content = FileManager::readFile(inputFile);
 
-    string content((istreambuf_iterator<char>(inFile)), istreambuf_iterator<char>());
-    inFile.close();
-
-    if (content.empty()) {
-        throw runtime_error("Error: Input file is empty.");
-    }
-
-    for (char& c : content) {
+    for (char &c : content) {
         c = shiftChar(c, shift);
     }
 
-    ofstream outFile(outputFile);
-    if (!outFile.is_open()) {
-        throw runtime_error("Error: Could not create output file: " + outputFile);
-    }
-
-    outFile << content;
-    outFile.close();
+    FileManager::writeFile(outputFile, content);
 }
 
-// Decrypts file by shifting the character in the opposite direction
-void CaesarCipher::decrypt(const string& inputFile, const string& outputFile) {
-    ifstream inFile(inputFile);
-    if (!inFile.is_open()) {
-        throw runtime_error("Error: Could not open input file: " + inputFile);
-    }
+// Decrypt: shift backward
+void CaesarCipher::decrypt(const string &inputFile,
+                           const string &outputFile) {
+    string content = FileManager::readFile(inputFile);
 
-    string content((istreambuf_iterator<char>(inFile)), istreambuf_iterator<char>());
-    inFile.close();
-
-    if (content.empty()) {
-        throw runtime_error("Error: Input file is empty.");
-    }
-
-    for (char& c : content) {
+    for (char &c : content) {
         c = shiftChar(c, -shift);
     }
 
-    ofstream outFile(outputFile);
-    if (!outFile.is_open()) {
-        throw runtime_error("Error: Could not create output file: " + outputFile);
-    }
-
-    outFile << content;
-    outFile.close();
+    FileManager::writeFile(outputFile, content);
 }

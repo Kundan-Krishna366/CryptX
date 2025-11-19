@@ -1,5 +1,5 @@
 #include "../include/XORCipher.h"
-#include <fstream>
+#include "../include/FileManager.h"
 #include <stdexcept>
 
 using namespace std;
@@ -19,37 +19,15 @@ void XORCipher::xorBuffer(string &buffer) const {
 
 void XORCipher::encrypt(const string &inputFile,
                         const string &outputFile) {
-    ifstream in(inputFile, ios::binary);
-    if (!in.is_open()) {
-        throw runtime_error("Failed to open input file: " + inputFile);
-    }
+    string buffer = FileManager::readFile(inputFile);
 
-    ofstream out(outputFile, ios::binary);
-    if (!out.is_open()) {
-        throw runtime_error("Failed to open output file: " + outputFile);
-    }
-
-    // Read entire file into memory (OK for small project files)
-    string buffer((istreambuf_iterator<char>(in)),
-                  istreambuf_iterator<char>());
-
-    if (in.bad()) {
-        throw runtime_error("Error while reading from file: " + inputFile);
-    }
-
-    // Core XOR logic
     xorBuffer(buffer);
 
-    out.write(buffer.data(),
-              static_cast<streamsize>(buffer.size()));
-
-    if (!out) {
-        throw runtime_error("Error while writing to file: " + outputFile);
-    }
+    FileManager::writeFile(outputFile, buffer);
 }
 
 void XORCipher::decrypt(const string &inputFile,
                         const string &outputFile) {
-    // XOR with the same key again reverses the operation
+    // XORing with the same key again decrypts
     encrypt(inputFile, outputFile);
 }
